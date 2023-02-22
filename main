@@ -1,0 +1,25 @@
+int pin = 2; 
+int sense = 3;
+int numVal;
+volatile int state = LOW; 
+void setup() {
+   pinMode(13, OUTPUT);
+  Serial.begin(9600);
+  pinMode(2, INPUT);
+   attachInterrupt(digitalPinToInterrupt(pin), glow, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(sense), glow, CHANGE);
+} 
+void loop() { 
+   numVal = digitalRead(sense);
+  Serial.print("sensor 1: ");
+  Serial.println(numVal);
+  numVal = digitalRead(pin);
+  Serial.print("Sensor 2: ");
+  Serial.println(numVal);
+  delay(300);
+} 
+
+void glow() { 
+   
+   state = !state; 
+  digitalWrite(13, state);}
