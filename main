@@ -1,25 +1,27 @@
-int pin = 2; 
-int sense = 3;
-int numVal;
-volatile int state = LOW; 
+int pin = 2; // Pin number for sensor 2
+int sense = 3; // Pin number for sensor 1
+int numVal; // Variable to store sensor reading
+volatile int state = LOW; // Current state of the LED
+
 void setup() {
-   pinMode(13, OUTPUT);
-  Serial.begin(9600);
-  pinMode(2, INPUT);
-   attachInterrupt(digitalPinToInterrupt(pin), glow, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(sense), glow, CHANGE);
+  pinMode(13, OUTPUT); // Set LED pin as output
+  Serial.begin(9600); // Start serial communication
+  pinMode(2, INPUT); // Set sensor 2 pin as input
+  attachInterrupt(digitalPinToInterrupt(pin), glow, CHANGE); // Attach interrupt to sensor 2 pin
+  attachInterrupt(digitalPinToInterrupt(sense), glow, CHANGE); // Attach interrupt to sensor 1 pin
 } 
+
 void loop() { 
-   numVal = digitalRead(sense);
+  numVal = digitalRead(sense); // Read sensor 1
   Serial.print("sensor 1: ");
-  Serial.println(numVal);
-  numVal = digitalRead(pin);
+  Serial.println(numVal); // Print sensor 1 value to serial monitor
+  numVal = digitalRead(pin); // Read sensor 2
   Serial.print("Sensor 2: ");
-  Serial.println(numVal);
-  delay(300);
+  Serial.println(numVal); // Print sensor 2 value to serial monitor
+  delay(300); // Wait for 300ms
 } 
 
 void glow() { 
-   
-   state = !state; 
-  digitalWrite(13, state);}
+  state = !state; // Toggle LED state
+  digitalWrite(13, state); // Set LED state
+}
