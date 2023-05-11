@@ -1,27 +1,40 @@
-int pin = 2; // Pin number for sensor 2
-int sense = 3; // Pin number for sensor 1
-int numVal; // Variable to store sensor reading
-volatile int state = LOW; // Current state of the LED
+// Declare the input pin and the initial state variable
+int pin = 2; 
+int pin2 = 3;
+volatile int state = LOW;
 
 void setup() {
-  pinMode(13, OUTPUT); // Set LED pin as output
-  Serial.begin(9600); // Start serial communication
-  pinMode(2, INPUT); // Set sensor 2 pin as input
-  attachInterrupt(digitalPinToInterrupt(pin), glow, CHANGE); // Attach interrupt to sensor 2 pin
-  attachInterrupt(digitalPinToInterrupt(sense), glow, CHANGE); // Attach interrupt to sensor 1 pin
-} 
+  // Set pin 13 as an output pin and pin 2 as an input pin
+  pinMode(13, OUTPUT);
+  pinMode(2, INPUT);
+  
+  pinMode(3, INPUT);
+  
 
-void loop() { 
-  numVal = digitalRead(sense); // Read sensor 1
-  Serial.print("sensor 1: ");
-  Serial.println(numVal); // Print sensor 1 value to serial monitor
-  numVal = digitalRead(pin); // Read sensor 2
-  Serial.print("Sensor 2: ");
-  Serial.println(numVal); // Print sensor 2 value to serial monitor
-  delay(300); // Wait for 300ms
-} 
+  // Start the serial communication at 9600 bits per second
+  Serial.begin(9600);
 
-void glow() { 
-  state = !state; // Toggle LED state
-  digitalWrite(13, state); // Set LED state
+  // Attach an interrupt to the input pin that will call the glow function when the state changes
+  attachInterrupt(digitalPinToInterrupt(pin), glow, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pin2), glow, CHANGE);
+  
+}
+
+void loop() {
+  // Read the state of the input pin
+  int sensorValue = digitalRead(pin);
+  int sensorValue2 = digitalRead(pin2);
+
+  // Print the sensor value to the serial monitor
+  Serial.println(sensorValue);
+Serial.println(sensorValue2);
+  // Delay for 100 milliseconds
+  delay(100);
+}
+
+void glow() {
+  // Toggle the state of the LED by inverting the current state variable
+  state = !state;
+  // Set the output pin (LED) to the new state
+  digitalWrite(13, state);
 }
